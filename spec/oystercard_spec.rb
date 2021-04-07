@@ -31,20 +31,6 @@ describe Oystercard do
       expect { subject.top_up 5 }.to change{ subject.balance }.by 5
     end
   end
-  
-  describe '#deduct' do
-     it 'responds to deduct' do
-       expect(subject).to respond_to(:deduct)
-     end
-  
-    it 'deduct takes arguments' do
-      expect(subject).to respond_to(:deduct).with(1).arguments
-     end
-  
-     it 'deduct from the card' do
-       expect { subject.deduct 5 }.to change{ subject.balance }.by -5
-     end
-  end
 
   describe '#journey' do
     it 'is initially not in a journey' do
@@ -70,3 +56,18 @@ describe Oystercard do
     end
   end
 end
+
+  # redundent tests 
+  # describe '#deduct' do
+  #    it 'responds to deduct' do
+  #      expect(subject).to respond_to(:deduct)
+  #    end
+  
+  #   it 'deduct takes arguments' do
+  #     expect(subject).to respond_to(:deduct).with(1).arguments
+  #    end
+  
+  #    it 'deduct from the card' do
+  #      expect { subject.deduct 5 }.to change{ subject.balance }.by -5
+  #    end
+  # end
