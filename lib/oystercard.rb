@@ -4,7 +4,7 @@ class Oystercard
   MAX_BALANCE = 90
 
   def initialize(in_journey = false)
-    @balance = 20
+    @balance = 0
     @in_journey = in_journey
   end
 
@@ -22,6 +22,7 @@ class Oystercard
   end
 
   def touch_in
+    fail "Insufficient balance to touch in" if balance < 1
     @in_journey = true
   end
 
