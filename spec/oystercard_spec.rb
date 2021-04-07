@@ -2,7 +2,6 @@ require 'oystercard'
 
 describe Oystercard do
   let(:card) { Oystercard.new }
-  # let(:MAX_BALANCE) { Oystercard::MAX_BALANCE}
 
   describe '#balance' do
     it 'responds to balance' do
@@ -47,4 +46,18 @@ describe Oystercard do
     end
   end
 
+    it 'is not #in_journey?' do
+      expect(subject).not_to be_in_journey
+    end
+
+    it 'can touch_in' do
+      subject.touch_in
+      expect(subject).to be_in_journey
+    end
+
+    it 'responds to touch_out' do
+      subject.touch_in
+      subject.touch_out
+      expect(subject).not_to be_in_journey
+    end
 end
