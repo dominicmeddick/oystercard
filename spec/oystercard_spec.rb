@@ -1,7 +1,7 @@
 require 'oystercard'
-
 describe Oystercard do
-  let(:station){ double :station }
+  let(:entry_station) { double :station }
+  let(:exit_station) { double :station}
   
   describe '#balance' do
     it 'responds to balance' do
@@ -40,31 +40,52 @@ describe Oystercard do
   
     it 'can touch in' do
      subject.top_up(1)
-     subject.touch_in(station)
+     subject.touch_in(entry_station)
      expect(subject).to be_in_journey
+    end
+
+    it 'stores the entry station in' do
+      subject.top_up(1)
+      subject.touch_in(entry_station)
+      expect(subject.entry_station).to eq entry_station
     end
   
     it 'can touch out' do
       subject.top_up(1)
-      subject.touch_in(station)
-      subject.touch_out
-      expect { subject.touch_out }.to change { subject.balance }.by (-Oystercard::MIN_CHARGE)
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect { subject.touch_out(exit_station) }.to change { subject.balance }.by (-Oystercard::MIN_CHARGE)
       expect(subject).not_to be_in_journey
+    end
+
+    it 'stores the exit station' do
+      subject.top_up(1)
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.exit_station).to eq exit_station
     end
   
     it 'will not touch in if below minimum balance' do
-     expect { subject.touch_in(station) }.to raise_error 'Insufficient balance to touch in'
+     expect { subject.touch_in(entry_station) }.to raise_error 'Insufficient balance to touch in'
     end
   end
 
+  describe '#recordthejourneys' do
 
-  describe '#record the journeys' do
-
-    it 'stores the entry station' do
+    it 'stores the entry and exit station in a hash' do
       subject.top_up(1)
-      subject.touch_in(station)
-      expect(subject.entry_station).to eq station
+      subject.touch_in(entry_station) 
+      subject.touch_out(exit_station)
+      expect(subject.journey_list).to eq([{ entry_station => exit_station }])
     end
+  end
+
+  describe '#initialize' do
+    it 'checks that the card creates an empty journey list' do
+      expect(subject.journey_list).to eq([])
+    end
+
+
+
   end
 end
-
